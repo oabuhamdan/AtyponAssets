@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{
+{% load crispy_forms_filters %}
+
+{% block title %}
+
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block page_header %}
+    <div>
+        <h2>
+            Inventory Details
+        </h2>
+        <hr>
+    </div>
+{% endblock %}
+{% block content %}
+    <table class="table table-hover table-borderless text-center">
+        <thead>
+        <tr>
+            <th scope="col">Asset Tag</th>
+            <th scope="col">Location</th>
+            <th scope="col">Specification</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Model</th>
+            <th scope="col">Service Tag</th>
+            <th scope="col">System Name</th>
+            <th scope="col">Assigned To</th>
+            <th scope="col">Teams</th>
+            <th scope="col">Acquisition Date</th>
+            <th scope="col">Decommission Date</th>
+            <th scope="col">Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{ item.asset_tag }}</td>
+                <td>{{ item.location }}</td>
+                <td>{{ item.specification }}</td>
+                <td>{{ item.brand }}</td>
+                <td>{{ item.model }}</td>
+                <td>{{ item.service_tag }}</td>
+                <td>{{ item.system_name }}</td>
+                <td>{{ item.assigned_to }}</td>
+                <td>{{ item.team }}</td>
+                <td>{{ item.acquisition_date }}</td>
+                <td>{{ item.decommission_date }}</td>
+                <td>{{ item.notes }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
