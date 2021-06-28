@@ -8,29 +8,24 @@
 {% load crispy_forms_tags %}
 
 {% block page_header %}
-    <div>
-        <h2>
-            Inventory Details
-        </h2>
-        <hr>
-    </div>
+    Inventory Details
 {% endblock %}
 {% block content %}
     <table class="table table-hover table-borderless text-center">
         <thead>
         <tr>
-            <th scope="col">Asset Tag</th>
-            <th scope="col">Location</th>
-            <th scope="col">Specification</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Model</th>
-            <th scope="col">Service Tag</th>
-            <th scope="col">System Name</th>
-            <th scope="col">Assigned To</th>
-            <th scope="col">Teams</th>
-            <th scope="col">Acquisition Date</th>
-            <th scope="col">Decommission Date</th>
-            <th scope="col">Notes</th>
+            <th id="asset_tag">Asset Tag</th>
+            <th id="location">Location</th>
+            <th id="specification">Specification</th>
+            <th id="brand">Brand</th>
+            <th id="model">Model</th>
+            <th id="service_tag">Service Tag</th>
+            <th id="system_name">System Name</th>
+            <th id="assigned_to">Assigned To</th>
+            <th id="team">Team</th>
+            <th id="acquisition_date">Acquisition Date</th>
+            <th id="decommission_date">Decommission Date</th>
+            <th id="notes">Notes</th>
         </tr>
         </thead>
         <tbody>
@@ -52,4 +47,7 @@
         {% endfor %}
         </tbody>
     </table>
+    <script>
+        $('table').excelTableFilter();
+    </script>
 {% endblock %}
