@@ -31,18 +31,18 @@
         <tbody>
         {% for item in items %}
             <tr>
-                <td>{{ item.asset_tag }}</td>
-                <td>{{ item.location }}</td>
-                <td>{{ item.specification }}</td>
-                <td>{{ item.brand }}</td>
-                <td>{{ item.model }}</td>
-                <td>{{ item.service_tag }}</td>
-                <td>{{ item.system_name }}</td>
-                <td>{{ item.assigned_to }}</td>
-                <td>{{ item.team }}</td>
-                <td>{{ item.acquisition_date }}</td>
-                <td>{{ item.decommission_date }}</td>
-                <td>{{ item.notes }}</td>
+                <td>{{ item.asset_tag|default_if_none:"-None-" }}</td>
+                <td>{{ item.location|default_if_none:"-None-" }}</td>
+                <td>{{ item.specification|default_if_none:"-None-" }}</td>
+                <td>{{ item.brand|default_if_none:"-None-" }}</td>
+                <td>{{ item.model|default_if_none:"-None-" }}</td>
+                <td>{{ item.service_tag|default_if_none:"-None-" }}</td>
+                <td>{{ item.system_name|default_if_none:"-None-" }}</td>
+                <td>{{ item.assigned_to|default_if_none:"-None-" }}</td>
+                <td>{{ item.team|default_if_none:"-None-" }}</td>
+                <td>{{ item.acquisition_date|default_if_none:"-None-" }}</td>
+                <td>{{ item.decommission_date|default_if_none:"-None-" }}</td>
+                <td>{{ item.notes|default_if_none:"-None-" }}</td>
             </tr>
         {% endfor %}
         </tbody>
