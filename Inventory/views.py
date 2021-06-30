@@ -1,5 +1,7 @@
 import dateutil.parser
 import pandas as pd
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -13,7 +15,7 @@ def home_page(request):
     return render(request, "details.html", data)
 
 
-@login_required
+@staff_member_required
 def upload_file(request):
     if request.method == 'GET':
         return render(request, "upload_file.html")
@@ -26,6 +28,7 @@ def add_items_to_db(request):
     file_path = request.FILES['file_path']
     df = pd.read_csv(file_path.temporary_file_path(), na_filter=False)
     items = [row for index, row in df.iterrows()]
+    failed_to_add_assets_tags = []
     for item in items:
         try:
             location = Location.objects.get_or_create(name=item[1].upper())[0]
@@ -39,4 +42,8 @@ def add_items_to_db(request):
                                 team=team,
                                 acquisition_date=acq_date, decommission_date=dec_date, notes=item[11])
         except Exception as e:
-            print(e)
+            failed_to_add_assets_tags.append(str(item[0]))
+            print('Failed to add asset with tag: ' + str(item[0]), e)
+
+    if len(failed_to_add_assets_tags) > 0:
+        messages.warning(request, 'Failed to add these asset tags\n' + ', '.join(failed_to_add_assets_tags))

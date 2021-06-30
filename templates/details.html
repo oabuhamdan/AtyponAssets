@@ -11,6 +11,15 @@
     Inventory Details
 {% endblock %}
 {% block content %}
+    {% for message in messages %}
+        <div>
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                <p style="word-wrap: break-word;">
+                    {{ message|safe }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
     <table class="table table-hover table-borderless text-center">
         <thead>
         <tr>
