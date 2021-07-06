@@ -13,6 +13,7 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'excel-bootstrap-table-filter-style.css' %}">
     <script src="{% static 'excel-bootstrap-table-filter-bundle.js' %}"></script>
+    <script src="{% static 'jquery.tabledit.js' %}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <title>
         {% block title %}
@@ -32,6 +33,9 @@
             {% if request.user.is_staff %}
                 <li class="nav-item">
                     <a class="nav-link" href="/upload">Upload CSV file</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/add_item">Add Item</a>
                 </li>
             {% endif %}
         </ul>

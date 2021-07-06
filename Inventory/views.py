@@ -1,17 +1,17 @@
-import dateutil.parser
-import pandas as pd
-from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.views.generic import CreateView
 
+from Inventory.helper import add_items_to_db, get_dropdown_items, update_row
 from Inventory.models import *
 
 
 @login_required
 def home_page(request):
     items = Item.objects.all()
-    data = {"items": items}
+    dropdown_items = get_dropdown_items()
+    data = {"items": items, 'dropdown_items': dropdown_items}
     return render(request, "details.html", data)
 
 
@@ -24,26 +24,14 @@ def upload_file(request):
         return redirect('/')
 
 
-def add_items_to_db(request):
-    file_path = request.FILES['file_path']
-    df = pd.read_csv(file_path.temporary_file_path(), na_filter=False)
-    items = [row for index, row in df.iterrows()]
-    failed_to_add_assets_tags = []
-    for item in items:
-        try:
-            location = Location.objects.get_or_create(name=item[1].upper())[0]
-            brand = Brand.objects.get_or_create(name=item[3])[0]
-            assigned_to = Employee.objects.get_or_create(ldap=item[7].lower())[0]
-            team = Team.objects.get_or_create(name=item[8].upper())[0]
-            acq_date = dateutil.parser.parse(item[9]) if item[9] is not '' else None
-            dec_date = dateutil.parser.parse(item[10]) if item[10] is not '' else None
-            Item.objects.create(asset_tag=item[0], location=location, specification=item[2], brand=brand,
-                                model=item[4], service_tag=item[5], system_name=item[6], assigned_to=assigned_to,
-                                team=team,
-                                acquisition_date=acq_date, decommission_date=dec_date, notes=item[11])
-        except Exception as e:
-            failed_to_add_assets_tags.append(str(item[0]))
-            print('Failed to add asset with tag: ' + str(item[0]), e)
+@staff_member_required
+def edit_row(request):
+    return update_row(request)
 
-    if len(failed_to_add_assets_tags) > 0:
-        messages.warning(request, 'Failed to add these asset tags\n' + ', '.join(failed_to_add_assets_tags))
+
+class AddItem(CreateView):
+    model = Item
+    template_name = 'addItem.html'
+    fields = ['asset_tag', 'location', 'specification', 'brand', 'model', 'service_tag', 'system_name', 'assigned_to',
+              'team', 'acquisition_date', 'decommission_date', 'notes']
+    success_url = "/"
